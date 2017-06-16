@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-require('./app/index.css')
+require('./index.css')
 
 // State
 // Lifecycle Event
