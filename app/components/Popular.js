@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import api from '../utils/api'
 
-let SelectLanguage = (props) => {
+const SelectLanguage = (props) => {
   let languages = ['All', 'JavaScript', 'Ruby', 'Java', 'CSS', 'Python']
   return (
     <ul className='languages'>
@@ -18,6 +18,36 @@ let SelectLanguage = (props) => {
       })}
     </ul>
   )
+}
+
+const RepoGrid = (props) => {
+  return (
+    <ul className='popular-list'>
+      {props.repos.map((repo, index) => {
+        return (
+          <li key={repo.name} className='popular-item'>
+            <div className='popular-rank'>#{index + 1}</div>
+            <ul className='space-list-items'>
+              <li>
+                <img
+                  className='avatar'
+                  src={repo.owner.avatar_url}
+                  alt={`Avatar for ${repo.owner.login}`}
+                  />
+              </li>
+              <li><a href={repo.html_url}>{repo.name}</a></li>
+              <li>@{repo.owner.login}</li>
+              <li>{repo.stargazers_count}</li>
+            </ul>
+          </li>
+        )
+      })}
+    </ul>
+  )
+}
+
+RepoGrid.propTypes = {
+  repos: PropTypes.array.isRequired
 }
 
 SelectLanguage.propTypes = {
@@ -51,7 +81,11 @@ class Popular extends React.Component {
     // Ajax
     api.fetchPopularRepos(lang)
       .then((repos) => {
-        console.log(repos)
+        this.setState(() => {
+          return {
+            repos: repos
+          }
+        })
       })
   }
 
@@ -59,8 +93,11 @@ class Popular extends React.Component {
     return (
       <div>
         <SelectLanguage
-         selectedLanguage={this.state.selectedLanguage}
-         onSelect={this.updateLanguage}/>
+          selectedLanguage={this.state.selectedLanguage}
+          onSelect={this.updateLanguage}
+        />
+        {!this.state.repos ? <p>LOADING</p> : <RepoGrid repos={this.state.repos} />}
+
       </div>
     )
   }
