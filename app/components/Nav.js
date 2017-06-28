@@ -1,6 +1,5 @@
 import React from 'react'
-import ReactRouter from 'react-router-dom'
-const NavLink = ReactRouter.NavLink
+import { NavLink } from 'react-router-dom'
 
 const Nav = () => {
   return (
